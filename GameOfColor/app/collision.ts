@@ -1,5 +1,4 @@
-function peopleTouched(personA, personB)
-{
+﻿function peopleTouched(personA, personB) {
     personA.damage(personB.strength);
     personB.damage(personA.strength);
 }
