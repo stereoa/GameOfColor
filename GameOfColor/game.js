@@ -1,3 +1,6 @@
+window.onload = function () {
+    var game = new GameOfColor.Game();
+};
 function peopleTouched(personA, personB) {
     personA.damage(personB.strength);
     personB.damage(personA.strength);
@@ -131,7 +134,7 @@ var GameOfColor;
             else {
                 //random
                 this.dna = new GameOfColor.Genetics.Dna();
-                if (gender == null) {
+                if (gender === null) {
                     this.dna.gender = randomNum(Gender.Male, Gender.Female);
                 }
                 this.dna.color = GameOfColor.Genetics.getRandomColor();
@@ -210,9 +213,6 @@ var GameOfColor;
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-window.onload = function () {
-    var game = new GameOfColor.Game();
-};
 var GameOfColor;
 (function (GameOfColor) {
     var fullScreenKey;

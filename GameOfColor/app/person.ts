@@ -49,7 +49,7 @@ module GameOfColor {
                 //random
                 this.dna = new Genetics.Dna();
 
-                if (gender == null) {
+                if (gender === null) {
                     this.dna.gender = randomNum(Gender.Male, Gender.Female);
                 }
                 this.dna.color = Genetics.getRandomColor();
@@ -73,7 +73,6 @@ module GameOfColor {
             //get access to drawing method
             var shape = game.add.graphics();
                 
-
             //draw a circle to represent the person
             shape.lineStyle(0);
 
