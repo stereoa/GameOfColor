@@ -72,6 +72,12 @@ module GameOfColor {
 
             //get access to drawing method
             var shape = game.add.graphics();
+<<<<<<< HEAD
+                
+=======
+
+
+>>>>>>> 06a76252f78c370336ccb7dfcfa5725e4e5b48a5
             //draw a circle to represent the person
             shape.lineStyle(0);
 

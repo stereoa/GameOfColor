@@ -203,6 +203,8 @@ var GameOfColor;
             }
             else {
             }
+            this.position.x += randomNum(-1, 1);
+            this.position.y += randomNum(-1, 1);
             //die a little (age)
             //this.health -= this.dna.decay;
         };
