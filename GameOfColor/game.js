@@ -1,3 +1,6 @@
+window.onload = function () {
+    var game = new GameOfColor.Game();
+};
 function peopleTouched(personA, personB) {
     personA.damage(personB.strength);
     personB.damage(personA.strength);
@@ -200,6 +203,8 @@ var GameOfColor;
             }
             else {
             }
+            this.position.x += randomNum(-1, 1);
+            this.position.y += randomNum(-1, 1);
             //die a little (age)
             //this.health -= this.dna.decay;
         };
@@ -210,9 +215,6 @@ var GameOfColor;
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-window.onload = function () {
-    var game = new GameOfColor.Game();
-};
 var GameOfColor;
 (function (GameOfColor) {
     var fullScreenKey;

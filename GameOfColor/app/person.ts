@@ -72,7 +72,7 @@ module GameOfColor {
 
             //get access to drawing method
             var shape = game.add.graphics();
-                
+
 
             //draw a circle to represent the person
             shape.lineStyle(0);
@@ -133,6 +133,9 @@ module GameOfColor {
             } else {
                 //decide if you CAN attack someone right now
             }
+
+            this.position.x += randomNum(-1, 1);
+            this.position.y += randomNum(-1, 1);
 
             //die a little (age)
             //this.health -= this.dna.decay;
