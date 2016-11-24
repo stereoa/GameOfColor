@@ -26,6 +26,7 @@ module GameOfColor {
         people: Person[];
 
         direction: number;
+        game: any;
 
         constructor(game, people, gender, x, y, mother, father) {
             super(game, 0, 0);
@@ -69,14 +70,24 @@ module GameOfColor {
 
             //travel direction
             this.direction = 0;
+            this.game = game;
+            this.setColor(this.dna.color);
+        }
+
+        setColor(color) {
+            if (this.children.length > 0) {
+                this.removeChild(this.children[0]);
+            }
+
+            this.dna.color = color;
 
             //get access to drawing method
-            var shape = game.add.graphics();
+            var shape = this.game.add.graphics();
             //draw a circle to represent the person
             shape.lineStyle(0);
 
             shape.beginFill(this.dna.color, 1);
-            shape.arc(0, 0, 10, 0, game.math.degToRad(this.health), true);
+            shape.arc(0, 0, 10, 0, this.game.math.degToRad(this.health), true);
             shape.lineTo(0, 0);
             shape.endFill();
 

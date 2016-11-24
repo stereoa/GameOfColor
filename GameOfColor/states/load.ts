@@ -26,10 +26,16 @@
 
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+            var colors = [];
+            for (var i = 0; i < STARTING_COLORS_MAX; i++) {
+                colors.push(Genetics.getRandomColor());
+            }
+
             // Make some people!
             var people = this.game.add.group();
             for (var i = 0; i < STARTING_POPULATION; i++) {
                 var person = Genetics.createRandomPerson(null, this.game, people);
+                person.setColor(colors[randomNum(0, colors.length - 1)]);
                 people.add(person);
             }
 

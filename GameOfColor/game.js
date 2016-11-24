@@ -1,6 +1,3 @@
-window.onload = function () {
-    var game = new GameOfColor.Game();
-};
 function peopleTouched(personA, personB) {
     personA.damage(personB.strength);
     personB.damage(personA.strength);
@@ -12,6 +9,7 @@ var BASE_MAX_STRENGTH = 10;
 var BASE_MAX_SIGHT = 10;
 var BASE_MAX_DECAY = 10;
 var STARTING_POPULATION = 10;
+var STARTING_COLORS_MAX = 5;
 var GameOfColor;
 (function (GameOfColor) {
     var Genetics;
@@ -152,17 +150,25 @@ var GameOfColor;
             this.people = people;
             //travel direction
             this.direction = 0;
+            this.game = game;
+            this.setColor(this.dna.color);
+        }
+        Person.prototype.setColor = function (color) {
+            if (this.children.length > 0) {
+                this.removeChild(this.children[0]);
+            }
+            this.dna.color = color;
             //get access to drawing method
-            var shape = game.add.graphics();
+            var shape = this.game.add.graphics();
             //draw a circle to represent the person
             shape.lineStyle(0);
             shape.beginFill(this.dna.color, 1);
-            shape.arc(0, 0, 10, 0, game.math.degToRad(this.health), true);
+            shape.arc(0, 0, 10, 0, this.game.math.degToRad(this.health), true);
             shape.lineTo(0, 0);
             shape.endFill();
             //its important to add the shape after we've enabled physics otherwise it gets its own physics body on enable
             this.addChild(shape);
-        }
+        };
         Person.prototype.update = function () {
             var _this = this;
             //create list of people that can be seen
@@ -215,6 +221,9 @@ var GameOfColor;
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+window.onload = function () {
+    var game = new GameOfColor.Game();
+};
 var GameOfColor;
 (function (GameOfColor) {
     var fullScreenKey;
@@ -266,10 +275,15 @@ var GameOfColor;
             this.game.time.fps = 60;
             this.game.stage.backgroundColor = "#FFFFFF";
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
+            var colors = [];
+            for (var i = 0; i < STARTING_COLORS_MAX; i++) {
+                colors.push(GameOfColor.Genetics.getRandomColor());
+            }
             // Make some people!
             var people = this.game.add.group();
             for (var i = 0; i < STARTING_POPULATION; i++) {
                 var person = GameOfColor.Genetics.createRandomPerson(null, this.game, people);
+                person.setColor(colors[randomNum(0, colors.length - 1)]);
                 people.add(person);
             }
             this.game.state.start("Simulation", false, false);
