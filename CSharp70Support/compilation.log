@@ -1,0 +1,226 @@
+********************************************************************************
+*                     Sunday, February 18, 2018 9:03:20 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-d7b87493432489542ae952dc77eec8fa 
+Exit code: 1
+Elapsed time: 0.52 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (1 line):
+0: Assets\Scripts\Stat.cs(22,9): error CS0102: The type 'Stats' already contains a definition for 'Accuracy'
+********************************************************************************
+*                     Sunday, February 18, 2018 9:06:31 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-5f2e4075facc7f047a1425d304d62476 
+Exit code: 1
+Elapsed time: 0.50 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (1 line):
+0: Assets\Scripts\Stat.cs(22,9): error CS0102: The type 'Stats' already contains a definition for 'Accuracy'
+********************************************************************************
+*                     Sunday, February 18, 2018 9:07:03 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-f9438030dc2c75a49ac493ae5b3ff3ce 
+Exit code: 1
+Elapsed time: 0.66 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (18 lines):
+0: Assets\Scripts\Utility\Utility.cs(28,58): error CS0117: 'File' does not contain a definition for 'ReadLines'
+1: Assets\Scripts\Utility\Utility.cs(29,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+2: Assets\Scripts\Utility\Utility.cs(30,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+3: Assets\Scripts\GameManager\GameManager.cs(60,9): warning CS0618: 'Application.LoadLevel(string)' is obsolete: 'Use SceneManager.LoadScene'
+4: Assets\Scripts\Entities\Circle.cs(66,50): error CS0117: 'Stats' does not contain a definition for 'ThrowAccuracy'
+5: Assets\Scripts\Entities\Circle.cs(70,43): error CS0117: 'Stats' does not contain a definition for 'ThrowAccuracy'
+6: Assets\Scripts\Entities\Circle.cs(90,50): error CS0117: 'Stats' does not contain a definition for 'Defense'
+7: Assets\Scripts\Entities\Circle.cs(94,43): error CS0117: 'Stats' does not contain a definition for 'Defense'
+8: Assets\Scripts\GUI\Options.cs(12,20): warning CS0649: Field 'Options.MusicSlide' is never assigned to, and will always have its default value null
+9: Assets\Scripts\GUI\Options.cs(9,27): warning CS0649: Field 'Options.CastPanel' is never assigned to, and will always have its default value null
+10: Assets\Scripts\GUI\SelectLevel.cs(11,19): warning CS0649: Field 'SelectLevel.SlideSpeed' is never assigned to, and will always have its default value 0
+11: Assets\Scripts\GUI\Options.cs(15,20): warning CS0649: Field 'Options.SoundFXSlide' is never assigned to, and will always have its default value null
+12: Assets\Scripts\GUI\Options.cs(18,19): warning CS0649: Field 'Options.SlideSpeed' is never assigned to, and will always have its default value 0
+13: Assets\Scripts\GUI\Cast.cs(12,19): warning CS0649: Field 'Cast.SlideSpeed' is never assigned to, and will always have its default value 0
+14: Assets\Scripts\GUI\Logo.cs(9,19): warning CS0649: Field 'Logo.FadeImg' is never assigned to, and will always have its default value null
+15: Assets\Scripts\GUI\Logo.cs(12,19): warning CS0649: Field 'Logo.Speed' is never assigned to, and will always have its default value 0
+16: Assets\Scripts\GUI\Cast.cs(9,27): warning CS0649: Field 'Cast.CastPanel' is never assigned to, and will always have its default value null
+17: Assets\Scripts\GUI\SelectLevel.cs(8,27): warning CS0649: Field 'SelectLevel.CastPanel' is never assigned to, and will always have its default value null
+********************************************************************************
+*                     Sunday, February 18, 2018 9:07:47 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-1ff17de8e4da5bb4e9c315ffd1ff5ade 
+Exit code: 1
+Elapsed time: 0.68 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (16 lines):
+0: Assets\Scripts\Utility\Utility.cs(28,58): error CS0117: 'File' does not contain a definition for 'ReadLines'
+1: Assets\Scripts\Utility\Utility.cs(29,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+2: Assets\Scripts\Utility\Utility.cs(30,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+3: Assets\Scripts\GameManager\GameManager.cs(60,9): warning CS0618: 'Application.LoadLevel(string)' is obsolete: 'Use SceneManager.LoadScene'
+4: Assets\Scripts\Entities\Circle.cs(90,50): error CS0117: 'Stats' does not contain a definition for 'Defense'
+5: Assets\Scripts\Entities\Circle.cs(94,43): error CS0117: 'Stats' does not contain a definition for 'Defense'
+6: Assets\Scripts\GUI\Logo.cs(12,19): warning CS0649: Field 'Logo.Speed' is never assigned to, and will always have its default value 0
+7: Assets\Scripts\GUI\Logo.cs(9,19): warning CS0649: Field 'Logo.FadeImg' is never assigned to, and will always have its default value null
+8: Assets\Scripts\GUI\Options.cs(15,20): warning CS0649: Field 'Options.SoundFXSlide' is never assigned to, and will always have its default value null
+9: Assets\Scripts\GUI\Options.cs(12,20): warning CS0649: Field 'Options.MusicSlide' is never assigned to, and will always have its default value null
+10: Assets\Scripts\GUI\SelectLevel.cs(8,27): warning CS0649: Field 'SelectLevel.CastPanel' is never assigned to, and will always have its default value null
+11: Assets\Scripts\GUI\Cast.cs(9,27): warning CS0649: Field 'Cast.CastPanel' is never assigned to, and will always have its default value null
+12: Assets\Scripts\GUI\Options.cs(18,19): warning CS0649: Field 'Options.SlideSpeed' is never assigned to, and will always have its default value 0
+13: Assets\Scripts\GUI\Cast.cs(12,19): warning CS0649: Field 'Cast.SlideSpeed' is never assigned to, and will always have its default value 0
+14: Assets\Scripts\GUI\SelectLevel.cs(11,19): warning CS0649: Field 'SelectLevel.SlideSpeed' is never assigned to, and will always have its default value 0
+15: Assets\Scripts\GUI\Options.cs(9,27): warning CS0649: Field 'Options.CastPanel' is never assigned to, and will always have its default value null
+********************************************************************************
+*                     Sunday, February 18, 2018 9:07:58 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-34f65802ead130d48adeba18d423bb1e 
+Exit code: 1
+Elapsed time: 0.66 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (14 lines):
+0: Assets\Scripts\Utility\Utility.cs(28,58): error CS0117: 'File' does not contain a definition for 'ReadLines'
+1: Assets\Scripts\Utility\Utility.cs(29,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+2: Assets\Scripts\Utility\Utility.cs(30,57): error CS0117: 'File' does not contain a definition for 'ReadLines'
+3: Assets\Scripts\GameManager\GameManager.cs(60,9): warning CS0618: 'Application.LoadLevel(string)' is obsolete: 'Use SceneManager.LoadScene'
+4: Assets\Scripts\GUI\Options.cs(9,27): warning CS0649: Field 'Options.CastPanel' is never assigned to, and will always have its default value null
+5: Assets\Scripts\GUI\Cast.cs(12,19): warning CS0649: Field 'Cast.SlideSpeed' is never assigned to, and will always have its default value 0
+6: Assets\Scripts\GUI\Logo.cs(9,19): warning CS0649: Field 'Logo.FadeImg' is never assigned to, and will always have its default value null
+7: Assets\Scripts\GUI\Options.cs(18,19): warning CS0649: Field 'Options.SlideSpeed' is never assigned to, and will always have its default value 0
+8: Assets\Scripts\GUI\Logo.cs(12,19): warning CS0649: Field 'Logo.Speed' is never assigned to, and will always have its default value 0
+9: Assets\Scripts\GUI\Options.cs(12,20): warning CS0649: Field 'Options.MusicSlide' is never assigned to, and will always have its default value null
+10: Assets\Scripts\GUI\Cast.cs(9,27): warning CS0649: Field 'Cast.CastPanel' is never assigned to, and will always have its default value null
+11: Assets\Scripts\GUI\SelectLevel.cs(11,19): warning CS0649: Field 'SelectLevel.SlideSpeed' is never assigned to, and will always have its default value 0
+12: Assets\Scripts\GUI\SelectLevel.cs(8,27): warning CS0649: Field 'SelectLevel.CastPanel' is never assigned to, and will always have its default value null
+13: Assets\Scripts\GUI\Options.cs(15,20): warning CS0649: Field 'Options.SoundFXSlide' is never assigned to, and will always have its default value null
+********************************************************************************
+*                     Sunday, February 18, 2018 9:08:52 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.dll" @Temp/UnityTempFile-14c4ab4e35b3b974ca46438aeeac56e7 
+Exit code: 0
+Elapsed time: 1.04 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (11 lines):
+0: Assets\Scripts\GameManager\GameManager.cs(60,9): warning CS0618: 'Application.LoadLevel(string)' is obsolete: 'Use SceneManager.LoadScene'
+1: Assets\Scripts\GUI\Options.cs(15,20): warning CS0649: Field 'Options.SoundFXSlide' is never assigned to, and will always have its default value null
+2: Assets\Scripts\GUI\SelectLevel.cs(8,27): warning CS0649: Field 'SelectLevel.CastPanel' is never assigned to, and will always have its default value null
+3: Assets\Scripts\GUI\Options.cs(18,19): warning CS0649: Field 'Options.SlideSpeed' is never assigned to, and will always have its default value 0
+4: Assets\Scripts\GUI\Cast.cs(9,27): warning CS0649: Field 'Cast.CastPanel' is never assigned to, and will always have its default value null
+5: Assets\Scripts\GUI\SelectLevel.cs(11,19): warning CS0649: Field 'SelectLevel.SlideSpeed' is never assigned to, and will always have its default value 0
+6: Assets\Scripts\GUI\Logo.cs(12,19): warning CS0649: Field 'Logo.Speed' is never assigned to, and will always have its default value 0
+7: Assets\Scripts\GUI\Options.cs(12,20): warning CS0649: Field 'Options.MusicSlide' is never assigned to, and will always have its default value null
+8: Assets\Scripts\GUI\Logo.cs(9,19): warning CS0649: Field 'Logo.FadeImg' is never assigned to, and will always have its default value null
+9: Assets\Scripts\GUI\Cast.cs(12,19): warning CS0649: Field 'Cast.SlideSpeed' is never assigned to, and will always have its default value 0
+10: Assets\Scripts\GUI\Options.cs(9,27): warning CS0649: Field 'Options.CastPanel' is never assigned to, and will always have its default value null
+
+- PDB to MDB conversion --------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\pdb2mdb.exe
+Arguments: Temp\Assembly-CSharp.dll
+Exit code: 0
+Elapsed time: 0.16 sec
+
+- pdb2mdb.exe output (0 lines):
+********************************************************************************
+*                     Sunday, February 18, 2018 9:08:54 PM                     *
+********************************************************************************
+CSharpCompilerWrapper.exe version: 2.0.3.30
+Platform: Windows
+Target assembly: Assembly-CSharp-Editor.dll
+Project directory: C:\Users\geoff\source\repos\GameOfColor
+Target profile directory: C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api
+Unity 'Data' or 'Frameworks' directory: C:/Program Files/Unity/Editor/Data
+Compiler: Microsoft C# 7.0
+
+- Compilation -----------------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\csc.exe
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll" -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll" -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll" -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll" @Temp/UnityTempFile-3dcdaf1ddb2509d4d84941ce6e23ef3d 
+Exit code: 0
+Elapsed time: 0.99 sec
+
+- Compiler output (0 lines):
+
+- Compiler errors (0 lines):
+
+- PDB to MDB conversion --------------------------------------
+
+Process: C:\Users\geoff\source\repos\GameOfColor\CSharp70Support\Roslyn\pdb2mdb.exe
+Arguments: Temp\Assembly-CSharp-Editor.dll
+Exit code: 0
+Elapsed time: 0.20 sec
+
+- pdb2mdb.exe output (0 lines):
