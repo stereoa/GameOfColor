@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET_4_6 || NET_STANDARD_2_0
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -10,273 +11,217 @@ using Debug = UnityEngine.Debug;
 
 public static class AsyncTools
 {
-    private static Awaiter updateAwaiter;
-    private static Awaiter fixedAwaiter;
-    private static Awaiter lateUpdateAwaiter;
-    private static Awaiter editorUpdateAwaiter;
-    private static Awaiter threadPoolAwaiter = new ThreadPoolContextAwaiter();
+	public static int MainThreadId { get; private set; }
+	public static SynchronizationContext MainThreadContext { get; private set; }
 
-    public static void WhereAmI(string text)
-    {
-        if (IsMainThread())
-        {
-            var contextName = (SynchronizationContext.Current as UnitySynchronizationContext)?.Name ?? "No context";
-            Debug.Log($"{text}: main thread, {contextName}, frame: {Time.frameCount}");
-        }
-        else
-        {
-            Debug.Log($"{text}: background thread, id: {Thread.CurrentThread.ManagedThreadId}");
-        }
-    }
+	private static Awaiter mainThreadAwaiter;
+	private static Awaiter threadPoolAwaiter;
+	private static Awaiter nextFrameAwaiter;
 
-    /// <summary>
-    /// Returns true if called from the Unity's main thread, and false otherwise.
-    /// </summary>
-    public static bool IsMainThread() => Thread.CurrentThread.ManagedThreadId == UnityScheduler.MainThreadId;
+	[RuntimeInitializeOnLoadMethod]
+	public static void Initialize()
+	{
+		MainThreadId = Thread.CurrentThread.ManagedThreadId;
+		MainThreadContext = SynchronizationContext.Current;
 
-    /// <summary>
-    /// Switches execution to a background thread.
-    /// </summary>
-    public static Awaiter ToThreadPool() => threadPoolAwaiter;
+		mainThreadAwaiter = new SynchronizationContextAwaiter(MainThreadContext);
+		threadPoolAwaiter = new ThreadPoolContextAwaiter();
+		nextFrameAwaiter = new NextFrameAwaiter();
+	}
 
-    /// <summary>
-    /// Switches execution to the Update context of the main thread.
-    /// </summary>
-    [Obsolete("Use ToUpdate(), ToLateUpdate() or ToFixedUpdate() instead.")]
-    public static Awaiter ToMainThread() => ToUpdate();
+	public static void WhereAmI(string text)
+	{
+		if (IsMainThread())
+		{
+			Debug.Log($"{text}: main thread, frame: {Time.frameCount}");
+		}
+		else
+		{
+			Debug.Log($"{text}: background thread, id: {Thread.CurrentThread.ManagedThreadId}");
+		}
+	}
 
-    /// <summary>
-	/// Switches execution to the EditorUpdate context of the main thread.
+	/// <summary>
+	/// Returns true if called from the Unity's main thread, and false otherwise.
 	/// </summary>
-	public static Awaiter ToEditorUpdate()
-    {
-        return editorUpdateAwaiter ?? (editorUpdateAwaiter = new SynchronizationContextAwaiter(UnityScheduler.EditorUpdateScheduler.Context));
-    }
+	public static bool IsMainThread() => Thread.CurrentThread.ManagedThreadId == MainThreadId;
 
-    /// <summary>
+	/// <summary>
+	/// Switches execution to a background thread.
+	/// </summary>
+	public static Awaiter ToThreadPool() => threadPoolAwaiter;
+
+	/// <summary>
 	/// Switches execution to the Update context of the main thread.
 	/// </summary>
-	public static Awaiter ToUpdate()
-    {
-        return updateAwaiter ?? (updateAwaiter = new SynchronizationContextAwaiter(UnityScheduler.UpdateScheduler.Context));
-    }
+	public static Awaiter ToMainThread() => mainThreadAwaiter;
 
-    /// <summary>
-	/// Switches execution to the LateUpdate context of the main thread.
-	/// </summary>
-	public static Awaiter ToLateUpdate()
-    {
-        return lateUpdateAwaiter ?? (lateUpdateAwaiter = new SynchronizationContextAwaiter(UnityScheduler.LateUpdateScheduler.Context));
-    }
-
-    /// <summary>
-	/// Switches execution to the FixedUpdate context of the main thread.
-	/// </summary>
-	public static Awaiter ToFixedUpdate()
-    {
-        return fixedAwaiter ?? (fixedAwaiter = new SynchronizationContextAwaiter(UnityScheduler.FixedUpdateScheduler.Context));
-    }
-
-    /// <summary>
+	/// <summary>
 	/// Downloads a file as an array of bytes.
 	/// </summary>
 	/// <param name="address">File URL</param>
 	/// <param name="cancellationToken">Optional cancellation token</param>
 	public static Task<byte[]> DownloadAsBytesAsync(string address, CancellationToken cancellationToken = new CancellationToken())
-    {
-        return Task.Factory.StartNew(
-            delegate
-            {
-                using (var webClient = new WebClient())
-                {
-                    return webClient.DownloadData(address);
-                }
-            }, cancellationToken);
-    }
+	{
+		return Task.Run(() =>
+						{
+							using (var webClient = new WebClient())
+							{
+								return webClient.DownloadData(address);
+							}
+						}, cancellationToken);
+	}
 
-    /// <summary>
-    /// Downloads a file as a string.
-    /// </summary>
-    /// <param name="address">File URL</param>
-    /// <param name="cancellationToken">Optional cancellation token</param>
-    public static Task<string> DownloadAsStringAsync(string address, CancellationToken cancellationToken = new CancellationToken())
-    {
-        return Task.Factory.StartNew(
-            delegate
-            {
-                using (var webClient = new WebClient())
-                {
-                    return webClient.DownloadString(address);
-                }
-            }, cancellationToken);
-    }
+	/// <summary>
+	/// Downloads a file as a string.
+	/// </summary>
+	/// <param name="address">File URL</param>
+	/// <param name="cancellationToken">Optional cancellation token</param>
+	public static Task<string> DownloadAsStringAsync(string address, CancellationToken cancellationToken = new CancellationToken())
+	{
+		return Task.Run(() =>
+						{
+							using (var webClient = new WebClient())
+							{
+								return webClient.DownloadString(address);
+							}
+						}, cancellationToken);
+	}
 
-    /// <summary>
-    /// Waits for specified number of seconds or until next frame.
-    /// 
-    /// If the argument is zero or negative, and if called from the main thread from Update or LateUpdate context,
-    /// waits until next rendering frame.
-    /// 
-    /// If the argument is zero or negative, and if called from the main thread from FixedUpdate context,
-    /// waits until next physics frame.
-    /// </summary>
-    /// <param name="seconds">If positive, number of seconds to wait</param>
-    public static Awaiter GetAwaiter(this float seconds)
-    {
-        var context = SynchronizationContext.Current as UnitySynchronizationContext;
-        if (seconds <= 0f && context != null)
-        {
-            return new ContextActivationAwaiter(context);
-        }
+	/// <summary>
+	/// Waits for specified number of seconds or until next frame.
+	/// 
+	/// If the argument is zero or negative, and if called from the main thread from Update or LateUpdate context,
+	/// waits until next rendering frame.
+	/// 
+	/// If the argument is zero or negative, and if called from the main thread from FixedUpdate context,
+	/// waits until next physics frame.
+	/// </summary>
+	/// <param name="seconds">If positive, number of seconds to wait</param>
+	public static Awaiter GetAwaiter(this float seconds)
+	{
+		var context = SynchronizationContext.Current;
+		if (seconds <= 0f && context != null)
+		{
+			return nextFrameAwaiter;
+		}
 
-        return new DelayAwaiter(seconds);
-    }
+		return new DelayAwaiter(seconds);
+	}
 
-    /// <summary>
-    /// Waits for specified number of seconds or until next frame.
-    /// 
-    /// If the argument is zero or negative, and if called from the main thread from Update or LateUpdate context,
-    /// waits until next rendering frame.
-    /// 
-    /// If the argument is zero or negative, and if called from the main thread from FixedUpdate context,
-    /// waits until next physics frame.
-    /// </summary>
-    /// <param name="seconds">If positive, number of seconds to wait</param>
-    public static Awaiter GetAwaiter(this int seconds) => GetAwaiter((float)seconds);
+	/// <summary>
+	/// Waits for specified number of seconds or until next frame.
+	/// 
+	/// If the argument is zero or negative, and if called from the main thread from Update or LateUpdate context,
+	/// waits until next rendering frame.
+	/// 
+	/// If the argument is zero or negative, and if called from the main thread from FixedUpdate context,
+	/// waits until next physics frame.
+	/// </summary>
+	/// <param name="seconds">If positive, number of seconds to wait</param>
+	public static Awaiter GetAwaiter(this int seconds) => GetAwaiter((float)seconds);
 
-    /// <summary>
-    /// Waits until all the tasks are completed.
-    /// </summary>
-    public static TaskAwaiter GetAwaiter(this IEnumerable<Task> tasks) => TaskEx.WhenAll(tasks).GetAwaiter();
+	/// <summary>
+	/// Waits until all the tasks are completed.
+	/// </summary>
+	public static TaskAwaiter GetAwaiter(this IEnumerable<Task> tasks) => Task.WhenAll(tasks).GetAwaiter();
 
-    /// <summary>
-    /// Waits until the process exits.
-    /// </summary>
-    public static TaskAwaiter<int> GetAwaiter(this Process process)
-    {
-        var tcs = new TaskCompletionSource<int>();
-        process.EnableRaisingEvents = true;
-        process.Exited += (sender, eventArgs) => tcs.TrySetResult(process.ExitCode);
-        if (process.HasExited)
-        {
-            tcs.TrySetResult(process.ExitCode);
-        }
-        return tcs.Task.GetAwaiter();
-    }
+	public static Awaiter GetAwaiter(this SynchronizationContext context) => new SynchronizationContextAwaiter(context);
 
-    /// <summary>
-    /// Waits for AsyncOperation completion
-    /// </summary>
-    public static Awaiter GetAwaiter(this AsyncOperation asyncOp) => new AsyncOperationAwaiter(asyncOp);
+	/// <summary>
+	/// Waits until the process exits.
+	/// </summary>
+	public static TaskAwaiter<int> GetAwaiter(this Process process)
+	{
+		var tcs = new TaskCompletionSource<int>();
+		process.EnableRaisingEvents = true;
+		process.Exited += (sender, eventArgs) => tcs.TrySetResult(process.ExitCode);
+		if (process.HasExited)
+		{
+			tcs.TrySetResult(process.ExitCode);
+		}
+		return tcs.Task.GetAwaiter();
+	}
 
-    #region Different awaiters
+	/// <summary>
+	/// Waits for AsyncOperation completion
+	/// </summary>
+	public static Awaiter GetAwaiter(this AsyncOperation asyncOp) => new AsyncOperationAwaiter(asyncOp);
 
-    public abstract class Awaiter : INotifyCompletion
-    {
-        public abstract bool IsCompleted { get; }
-        public abstract void OnCompleted(Action action);
-        public Awaiter GetAwaiter() => this;
-        public void GetResult() { }
-    }
+	#region Various awaiters
 
-    private class DelayAwaiter : Awaiter
-    {
-        private readonly SynchronizationContext context;
-        private readonly float seconds;
+	public abstract class Awaiter : INotifyCompletion
+	{
+		public abstract bool IsCompleted { get; }
+		public abstract void OnCompleted(Action action);
+		public Awaiter GetAwaiter() => this;
 
-        public DelayAwaiter(float seconds)
-        {
-            context = SynchronizationContext.Current;
-            this.seconds = seconds;
-        }
+		public void GetResult()
+		{
+		}
+	}
 
-        public override bool IsCompleted => (seconds <= 0f);
+	private class DelayAwaiter : Awaiter
+	{
+		private readonly SynchronizationContext context;
+		private readonly float seconds;
 
-        public override void OnCompleted(Action action)
-        {
-            TaskEx.Delay((int)(seconds * 1000)).ContinueWith(prevTask =>
-                                                             {
-                                                                 if (context != null)
-                                                                 {
-                                                                     context.Post(state => action(), null);
-                                                                 }
-                                                                 else
-                                                                 {
-                                                                     action();
-                                                                 }
-                                                             });
-        }
-    }
+		public DelayAwaiter(float seconds)
+		{
+			context = SynchronizationContext.Current;
+			this.seconds = seconds;
+		}
 
-    private class ContextActivationAwaiter : Awaiter
-    {
-        private readonly UnitySynchronizationContext context;
-        private Action continuation;
+		public override bool IsCompleted => (seconds <= 0f);
 
-        public ContextActivationAwaiter(UnitySynchronizationContext context)
-        {
-            this.context = context;
-        }
+		public override void OnCompleted(Action action)
+		{
+			Task.Delay((int)(seconds * 1000)).ContinueWith(prevTask =>
+							   {
+								   if (context != null)
+								   {
+									   context.Post(state => action(), null);
+								   }
+								   else
+								   {
+									   action();
+								   }
+							   });
+		}
+	}
 
-        public override bool IsCompleted => false;
+	private class SynchronizationContextAwaiter : Awaiter
+	{
+		private readonly SynchronizationContext context;
 
-        public override void OnCompleted(Action action)
-        {
-            continuation = action;
-            context.Activated += ContextActivationEventHandler;
-        }
+		public SynchronizationContextAwaiter(SynchronizationContext context)
+		{
+			this.context = context;
+		}
 
-        private void ContextActivationEventHandler(object sender, EventArgs eventArgs)
-        {
-            context.Activated -= ContextActivationEventHandler;
-            context.Post(state => continuation(), null);
-        }
-    }
+		public override bool IsCompleted => context == null || context == SynchronizationContext.Current;
+		public override void OnCompleted(Action action) => context.Post(state => action(), null);
+	}
 
-    private class SynchronizationContextAwaiter : Awaiter
-    {
-        private readonly UnitySynchronizationContext context;
+	private class ThreadPoolContextAwaiter : Awaiter
+	{
+		public override bool IsCompleted => IsMainThread() == false;
+		public override void OnCompleted(Action action) => ThreadPool.QueueUserWorkItem(state => action(), null);
+	}
 
-        public SynchronizationContextAwaiter(UnitySynchronizationContext context)
-        {
-            this.context = context;
-        }
+	private class NextFrameAwaiter : Awaiter
+	{
+		public override bool IsCompleted => false;
+		public override void OnCompleted(Action action) => NextFrameHelper.Enqueue(action);
+	}
 
-        public override bool IsCompleted => context == null || context == SynchronizationContext.Current;
-
-        public override void OnCompleted(Action action) => context.Post(state => action(), null);
-    }
-
-    private class ThreadPoolContextAwaiter : Awaiter
-    {
-        public override bool IsCompleted => IsMainThread() == false;
-        public override void OnCompleted(Action action) => ThreadPool.QueueUserWorkItem(state => action(), null);
-    }
-
-    private class AsyncOperationAwaiter : Awaiter
-    {
-        private readonly AsyncOperation asyncOp;
-        public AsyncOperationAwaiter(AsyncOperation asyncOp)
-        {
-            this.asyncOp = asyncOp;
-        }
-
-        public override bool IsCompleted => asyncOp.isDone;
-        public override void OnCompleted(Action action)
-        {
-            Task.Factory.StartNew(async () =>
-            {
-                while (asyncOp.isDone == false)
-                {
-                    await 0;
-                }
-                action();
-            },
-                CancellationToken.None,
-                TaskCreationOptions.None,
-                UnityScheduler.UpdateScheduler);
-        }
-    }
-
-    #endregion
+	private class AsyncOperationAwaiter : Awaiter
+	{
+		private readonly AsyncOperation asyncOp;
+		public AsyncOperationAwaiter(AsyncOperation asyncOp) => this.asyncOp = asyncOp;
+		public override bool IsCompleted => asyncOp.isDone;
+		public override void OnCompleted(Action action) => asyncOp.completed += _ => action();
+	}
+	#endregion
 }
+#endif
